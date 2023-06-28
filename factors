@@ -4,6 +4,44 @@ import sys
 import math
 
 
+def is_prime(num):
+    """Check if a number is prime"""
+
+    if num < 2:
+        return False
+    if num == 2 or num == 3:
+        return True
+    if num % 2 == 0 or num % 3 == 0:
+        return False
+
+    i = 5
+    w = 2
+
+    while i * i <= num:
+        if num % i == 0:
+            return False
+
+        i += w
+        w = 6 - w
+
+    return True
+
+
+def factorize(num):
+    """Find a factorization of a number"""
+
+    if num % 2 == 0:
+        return f"{num}={num // 2}*2"
+
+    n = math.floor(math.sqrt(num))
+
+    for x in range(3, n + 1, 2):
+        if num % x == 0:
+            return f"{num}={num // x}*{x}"
+
+    return f"{num}={num}*1"
+
+
 def main():
     """Prints any factorization of each number in a file"""
 
@@ -15,16 +53,10 @@ def main():
         for line in file:
             num = int(line.rstrip("\n"))
 
-            if num % 2 == 0:
-                print(f"{num}={num // 2}*{2}")
-                continue
-
-            n = math.floor(math.sqrt(num))
-
-            for x in range(3, n + 1, 2):
-                if num % x == 0:
-                    print(f"{num}={num // x}*{x}")
-                    break
+            if is_prime(num):
+                print(f"{num}={num}*1")
+            else:
+                print(factorize(num))
 
 
 main()
