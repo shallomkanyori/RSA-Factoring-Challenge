@@ -1,0 +1,30 @@
+#!/usr/bin/python3
+"""This module prints any one factorization of each number in a file"""
+import sys
+import math
+
+
+def main():
+    """Prints any factorization of each number in a file"""
+
+    if len(sys.argv) != 2:
+        print("Usage: factors file")
+        sys.exit(1)
+
+    with open(sys.argv[1], 'r') as file:
+        for line in file:
+            num = int(line.rstrip("\n"))
+
+            if num % 2 == 0:
+                print(f"{num}={num // 2}*{2}")
+                continue
+
+            n = math.floor(math.sqrt(num))
+
+            for x in range(3, n + 1, 2):
+                if num % x == 0:
+                    print(f"{num}={num // x}*{x}")
+                    break
+
+
+main()
