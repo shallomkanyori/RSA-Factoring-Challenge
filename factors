@@ -1,45 +1,22 @@
 #!/usr/bin/python3
 """This module prints any one factorization of each number in a file"""
 import sys
-import math
-
-
-def is_prime(num):
-    """Check if a number is prime"""
-
-    if num < 2:
-        return False
-    if num == 2 or num == 3:
-        return True
-    if num % 2 == 0 or num % 3 == 0:
-        return False
-
-    i = 5
-    w = 2
-
-    while i * i <= num:
-        if num % i == 0:
-            return False
-
-        i += w
-        w = 6 - w
-
-    return True
+import time
 
 
 def factorize(num):
-    """Find a factorization of a number"""
+    """Returns a pair of factors of a number"""
 
     if num % 2 == 0:
-        return f"{num}={num // 2}*2"
+        return (2, num // 2)
 
-    n = math.floor(math.sqrt(num))
+    n = int(num**0.5)
 
     for x in range(3, n + 1, 2):
         if num % x == 0:
-            return f"{num}={num // x}*{x}"
+            return (x, num // x)
 
-    return f"{num}={num}*1"
+    return (1, num)
 
 
 def main():
@@ -50,13 +27,18 @@ def main():
         sys.exit(1)
 
     with open(sys.argv[1], 'r') as file:
+        start = time.time()
+
         for line in file:
             num = int(line.rstrip("\n"))
 
-            if is_prime(num):
-                print(f"{num}={num}*1")
-            else:
-                print(factorize(num))
+            factors = factorize(num)
+            print(f"{num}={factors[1]}*{factors[0]}")
+
+            if time.time() - start > 5:
+                print("Time limit exceeded")
+                sys.exit(1)
 
 
-main()
+if __name__ == "__main__":
+    main()
