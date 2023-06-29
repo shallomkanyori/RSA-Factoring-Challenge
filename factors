@@ -26,10 +26,17 @@ def main():
         print("Usage: factors file")
         sys.exit(1)
 
-    with open(sys.argv[1], 'r') as file:
-        start = time.time()
+    try:
+        with open(sys.argv[1], 'r') as file:
+            lines = file.readlines()
 
-        for line in file:
+    except Exception as e:
+        print(e)
+        sys.exit(1)
+
+    else:
+        for line in lines:
+            start = time.time()
             num = int(line.rstrip("\n"))
 
             factors = factorize(num)
