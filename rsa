@@ -1,0 +1,51 @@
+#!/usr/bin/python3
+"""This module prints any one factorization of each number in a file"""
+import sys
+
+
+def get_prime_factor(num):
+    """Returns a prime factor of a number.
+
+        Args:
+            num (int): the number to factor."""
+    n = int(num ** 0.5)
+    sieve = [True] * (n + 1)
+    sieve[0] = sieve[1] = False
+
+    for i in range(len(sieve)):
+        if sieve[i]:
+            if num % i == 0:
+                return i
+
+            for j in range(i*i, n + 1, i):
+                sieve[j] = False
+
+    return num
+
+
+def main():
+    """Prints the prime factorization of a number in a file"""
+
+    if len(sys.argv) != 2:
+        print("Usage: factors file")
+        sys.exit(1)
+
+    try:
+        with open(sys.argv[1], 'r') as file:
+            line = file.readline()
+
+    except Exception as e:
+        print(e)
+        sys.exit(1)
+
+    else:
+        num = int(line.rstrip("\n"))
+
+        q = get_prime_factor(num)
+        p = num // q
+
+        print(f"{num}={p}*{q}")
+
+
+if __name__ == "__main__":
+    main()
